@@ -1,0 +1,112 @@
+# ─────────────────────────────────────────────────────────────────
+# .easignore — EAS Build upload exclusions for MedGuard AI
+#
+# EAS Build uploads your project directory to Expo's cloud servers.
+# Everything listed here is EXCLUDED from that upload, shrinking
+# the archive from ~12 GB to well under 200 MB.
+#
+# Rules mirror .gitignore syntax. EAS also respects .gitignore
+# automatically, but .easignore takes precedence and can add more.
+# ─────────────────────────────────────────────────────────────────
+
+# ── Node modules (rebuilt on the EAS server from package.json) ──
+node_modules/
+
+# ── ML training folder — primary cause of 12GB build size ───────
+# Contains: DATASET_0.zip (1.2GB), DATASET_1.zip (2.2GB),
+#           4× PyTorch checkpoints (.pth, 332MB each),
+#           PAD-UFES-20 patient images (hundreds of PNGs)
+# The ONLY ML file the app needs is assets/models/medguard_v3.tflite
+ml/
+
+# ── ML training artifacts (anywhere in the project) ─────────────
+*.ipynb
+*.ipynb_checkpoints/
+medguard_policy.json
+medguard-3-2-fixed*/
+*.pth
+*.h5
+*.keras
+*.pb
+*.ckpt*
+*.tfrecord
+*.parquet
+*.csv
+checkpoints/
+saved_models/
+
+# ── Stitch / Figma design exports ───────────────────────────────
+# These are UI design reference files, not app code.
+stitch_medguard_ai_mobile_system/
+
+# ── Product documentation ────────────────────────────────────────
+01_Product_Overview.md
+02_Features_Requirements.md
+03_UI_UX_Requirements.md
+04_Technical_Requirements.md
+DESIGN.md
+
+# ── Test & debug scripts ─────────────────────────────────────────
+tests/
+scripts/
+*.test.ts
+*.test.js
+*.spec.ts
+*.spec.js
+probe_imports.js
+reset-project.js
+verify_encryption.js
+verify_encryption.py
+verify_orchestrator.js
+.test_output/
+
+# ── Local environment & secrets (never ship to cloud) ───────────
+.env
+.env.local
+.env.development
+.env.production
+.env*.local
+
+# ── Build outputs & caches ───────────────────────────────────────
+dist/
+web-build/
+.expo/
+.metro-cache/
+*.tsbuildinfo
+android/
+ios/
+
+# ── OS / editor artifacts ────────────────────────────────────────
+.DS_Store
+Thumbs.db
+*.orig.*
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# ── Git ──────────────────────────────────────────────────────────
+.git/
+.gitignore
+
+# ── Misc large files unlikely to be needed ───────────────────────
+*.zip
+*.tar.gz
+*.tar
+*.rar
+*.7z
+*.csv
+*.parquet
+*.jsonl
+
+# ─────────────────────────────────────────────────────────────────
+# IMPORTANT: Do NOT ignore these — they ARE needed for the build:
+#   src/              (app source code)
+#   assets/           (images, fonts, tflite model)
+#   app.json          (Expo config)
+#   package.json      (dependencies)
+#   tsconfig.json     (TypeScript config)
+#   metro.config.js   (Metro bundler — tflite asset registration)
+#   eas.json          (EAS build profiles)
+#   babel.config.js   (if present)
+# ─────────────────────────────────────────────────────────────────

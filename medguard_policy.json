@@ -1,0 +1,30 @@
+{
+  "classes": [
+    "malignant_suspect",
+    "diabetic_foot_ulcer",
+    "eczema",
+    "psoriasis",
+    "normal_benign",
+    "other_condition"
+  ],
+  "img_size": 224,
+  "input": "float32 RGB, raw 0-255 (no extra normalisation)",
+  "temperature": 0.6693225469195587,
+  "how_to_apply": "p_cal = softmax(log(p_model) / temperature)",
+  "malignant_class_index": 0,
+  "malignant_class_name": "malignant_suspect",
+  "malignant_threshold": 0.25,
+  "other_condition_index": 5,
+  "uncertain_threshold": 0.5,
+  "decision_rule": "if p_cal[malignant] >= malignant_threshold -> flag malignant; elif max(p_cal) < uncertain_threshold -> \"uncertain, see a doctor\"; else argmax",
+  "inference_mode": "no-TTA",
+  "note": "Thresholds were chosen on the validation set; re-check per-skin-tone recall before shipping. malignant_suspect is an aggregate class (melanoma + selected malignant diagnoses), not melanoma-only. other_condition (if present) means \"looks like something outside the targeted conditions\", NOT \"harmless\".",
+  "tflite_policy_parity_metrics": {
+    "argmax_agreement_percent": 99.90085922009253,
+    "malignant_decision_agreement_percent": 100.0,
+    "uncertainty_agreement_percent": 99.93390614672836,
+    "final_policy_agreement_percent": 99.96695307336417,
+    "max_absolute_probability_difference": 0.008508443832397461,
+    "mean_absolute_probability_difference": 0.000296892540063709
+  }
+}

@@ -1,7 +1,85 @@
-# Learn more https://docs.github.com/en/get-started/getting-started-with-git/ignoring-files
+# =============================================================================
+# MedGuard AI — Git Ignore Configuration
+# Ensures only source code and required assets are tracked.
+# Prevents leaking API keys, ML training data, datasets, and temp scripts.
+# =============================================================================
 
-# dependencies
+# -----------------------------------------------------------------------------
+# 1. API Keys, Environment Variables & Credentials (NEVER COMMIT)
+# -----------------------------------------------------------------------------
+.env
+.env*
+!.env.example
+*.pem
+*.key
+*.jks
+*.keystore
+*.p12
+*.p8
+*.mobileprovision
+
+# Cloud Credentials & Service Accounts
+*service-account*.json
+google-services.json
+GoogleService-Info.plist
+
+# -----------------------------------------------------------------------------
+# 2. Machine Learning Data, Datasets & Training Pipelines
+# -----------------------------------------------------------------------------
+# Heavy image datasets and clinical data
+ml/data/
+ml/**/data/
+*.csv
+!src/**/*.csv
+*.parquet
+*.feather
+*.h5
+*.hdf5
+*.pkl
+*.pickle
+*.pt
+*.pth
+*.onnx
+*.weights
+*.bin
+
+# Jupyter Notebooks & training experiments
+*.ipynb
+.ipynb_checkpoints/
+medv4/
+medgaurd*.ipynb
+medguard*.ipynb
+
+# Deprecated / duplicate models and root model exports
+/medguard_model.tflite
+assets/models/*deprecated*
+assets/models/medguard_v3-deprecated.tflite
+
+# -----------------------------------------------------------------------------
+# 3. Temporary Development Scripts, Dumps & Logs
+# -----------------------------------------------------------------------------
+fix*.js
+update*.py
+restore.py
+test_atob.js
+temp_screens_dump*.txt
+nb_cells.txt
+eas_log.txt
+build.json
+prompt_draft.md
+gradcam_fairness.png
+.agents/
+stitch_medguard_ai_mobile_system/
+scripts/.test_output/
+
+# -----------------------------------------------------------------------------
+# 4. Expo & React Native Build Artifacts
+# -----------------------------------------------------------------------------
+# Node dependencies
 node_modules/
+npm-debug.*
+yarn-debug.*
+yarn-error.*
 
 # Expo
 .expo/
@@ -9,35 +87,29 @@ dist/
 web-build/
 expo-env.d.ts
 
-# Native
+# Native builds
 .kotlin/
+/ios/
+/android/
 *.orig.*
-*.jks
-*.p8
-*.p12
-*.key
-*.mobileprovision
 
-# Metro
+# Metro bundler
 .metro-health-check*
 
-# debug
-npm-debug.*
-yarn-debug.*
-yarn-error.*
-
-# macOS
-.DS_Store
-*.pem
-
-# local env files
-.env*.local
-
-# typescript
+# TypeScript build info
 *.tsbuildinfo
 
-example
+# -----------------------------------------------------------------------------
+# 5. OS & IDE System Files
+# -----------------------------------------------------------------------------
+.DS_Store
+Thumbs.db
+ehthumbs.db
 
-# generated native folders
-/ios
-/android
+# VS Code (allow team settings/extensions, ignore local state)
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+.idea/
+*.sublime-project
+*.sublime-workspace
